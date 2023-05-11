@@ -38,19 +38,3 @@ class Searchbar extends Component {
   }
 }
 export default Searchbar;
-
-{
-  /* <div className={css.Searchbar}>
-        <form className={css.SearchForm} onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <AddIcon />
-          </button>
-          <input
-            type="text"
-            placeholder="Search images and photos"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-        </form>
-      </div> */
-}
