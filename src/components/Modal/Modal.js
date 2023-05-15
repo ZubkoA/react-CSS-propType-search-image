@@ -1,7 +1,44 @@
-import * as basicLightbox from 'basiclightbox';
+import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
+import css from './Modal.module.css';
 
-const instance = basicLightbox.create(`
-    <img src="assets/images/image.png" width="800" height="600">
-`);
+const modalRoot = document.getElementById('modal-root');
+class Modal extends Component {
+  componentDidMount() {
+    console.log('Modal componentDidMount');
+    window.addEventListener('keydown', this.handlKeyDown);
+  }
 
-instance.show();
+  componentWillUnmount() {
+    console.log('Modal componentWillMount');
+    window.removeEventListener('keydown', this.handlKeyDown);
+  }
+  handlKeyDown = e => {
+    if (e.code === 'Escape') {
+      console.log('Close this window');
+      this.props.onClose();
+    }
+  };
+
+  handleBackdrop = e => {
+    console.log('target with onClick:', e.currentTarget);
+    console.log('target:', e.target);
+
+    if (e.target === e.currentTarget) {
+      this.props.onClose();
+    }
+  };
+  render() {
+    const { url, tags } = this.props.modal;
+    return createPortal(
+      <div className={css.Overlay} onClick={this.handleBackdrop}>
+        <div className={css.Modal}>
+          <img src={url} alt={tags} />
+        </div>
+      </div>,
+      modalRoot
+    );
+  }
+}
+
+export default Modal;

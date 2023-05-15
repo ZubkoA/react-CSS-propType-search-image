@@ -1,19 +1,35 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
-import React from 'react';
+import React, { Component } from 'react';
 
-const ImageGallery = ({ hits }) => {
-  return (
-    <ul className={css.ImageGallery}>
-      {hits.map(({ id, webformatURL, tags }) => (
-        <li className={css.ImageGalleryItem} key={id}>
-          <ImageGalleryItem webformatURL={webformatURL} tags={tags} />
-        </li>
-      ))}
-    </ul>
-  );
-};
+class ImageGallery extends Component {
+  state = { modal: { url: '', tags: '' } };
+
+  handleClick = ({ target: { currentSrc, alt } }) => {
+    this.setState({ modal: { url: currentSrc, tags: alt } });
+    console.log(this.state);
+    this.props.onData(this.state);
+    this.props.open();
+  };
+
+  render() {
+    const { hits } = this.props;
+    return (
+      <ul className={css.ImageGallery}>
+        {hits.map(({ id, webformatURL, tags }) => (
+          <li
+            className={css.ImageGalleryItem}
+            key={id}
+            onClick={this.handleClick}
+          >
+            <ImageGalleryItem webformatURL={webformatURL} tags={tags} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+}
 
 export default ImageGallery;
 
