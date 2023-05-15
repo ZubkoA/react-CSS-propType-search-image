@@ -1,14 +1,10 @@
 import React from 'react';
 import css from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ hits }) => {
+const ImageGalleryItem = ({ webformatURL, tags }) => {
   return (
     <>
-      {hits.map(({ id, webformatURL, tags }) => (
-        <li className={css.ImageGalleryItem} key={id}>
-          <img src={webformatURL} alt={tags} />
-        </li>
-      ))}
+      <img src={webformatURL} alt={tags} className={css.ImageGalleryItemImg} />
     </>
   );
 };
