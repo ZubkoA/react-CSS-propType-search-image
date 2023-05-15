@@ -2,13 +2,20 @@ import { Component } from 'react';
 import { getSearchImg } from './api/SearchFile';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-
+import Modal from './Modal/Modal';
 import css from './App.module.css';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
 
 class App extends Component {
-  state = { searchImg: '', hits: null, isLoading: false, page: 1, perPage: 12 };
+  state = {
+    searchImg: '',
+    hits: null,
+    isLoading: false,
+    page: 1,
+    perPage: 12,
+    isShowModal: false,
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const images = this.state.searchImg.trim();
@@ -17,9 +24,9 @@ class App extends Component {
       this.setState({ isLoading: true, hits: null });
       getSearchImg(images, page, perPage)
         .then(data => {
-          // const lastPage = data.total / perPage;
           console.log(data.hits);
           console.log(data.total);
+
           if (data.hits) return this.setState({ hits: data.hits });
           else if (data.hits && hits !== null)
             return this.setState({ hits: [...data.hits, ...prevState.hits] });
@@ -34,6 +41,13 @@ class App extends Component {
     }
   }
 
+  openModal = () => {
+    this.setState({ isShowModal: true });
+  };
+  closeModal = () => {
+    this.setState({ isShowModal: false });
+  };
+
   handleSearch = searchImg => {
     this.setState({ searchImg });
   };
@@ -45,9 +59,13 @@ class App extends Component {
       };
     });
   };
+  savedModal = data => {
+    // console.log(data);
+    this.setState({ ...data });
+  };
 
   render() {
-    const { hits, isLoading } = this.state;
+    const { hits, isLoading, isShowModal, modal } = this.state;
     return (
       <div className={css.App}>
         <Searchbar handleSearch={this.handleSearch} />
@@ -55,10 +73,16 @@ class App extends Component {
 
         {hits?.length > 0 && (
           <>
-            <ImageGallery hits={hits} /> <Button handleClick={this.handleAdd} />
+            <ImageGallery
+              hits={hits}
+              onData={this.savedModal}
+              open={this.openModal}
+            />
+            <Button handleClick={this.handleAdd} />
           </>
         )}
         {hits?.length === 0 && <div>No results!</div>}
+        {isShowModal && <Modal onClose={this.closeModal} modal={modal} />}
       </div>
     );
   }
