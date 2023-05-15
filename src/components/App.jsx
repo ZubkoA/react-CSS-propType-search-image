@@ -24,9 +24,6 @@ class App extends Component {
       this.setState({ isLoading: true, hits: null });
       getSearchImg(images, page, perPage)
         .then(data => {
-          console.log(data.hits);
-          console.log(data.total);
-
           if (data.hits) return this.setState({ hits: data.hits });
           else if (data.hits && hits !== null)
             return this.setState({ hits: [...data.hits, ...prevState.hits] });
@@ -51,16 +48,15 @@ class App extends Component {
   handleSearch = searchImg => {
     this.setState({ searchImg });
   };
+
   handleAdd = () => {
     this.setState(prevState => {
-      console.log(prevState);
       return {
         page: prevState.page + 1,
       };
     });
   };
   savedModal = data => {
-    // console.log(data);
     this.setState({ ...data });
   };
 
