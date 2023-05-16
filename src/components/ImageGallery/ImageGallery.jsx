@@ -6,8 +6,8 @@ import React, { Component } from 'react';
 class ImageGallery extends Component {
   state = { modal: { url: '', tags: '' } };
 
-  handleClick = ({ target: { currentSrc, alt } }) => {
-    this.setState({ modal: { url: currentSrc, tags: alt } });
+  handleClick = (tags, largeImageURL) => {
+    this.setState({ modal: { url: largeImageURL, tags: tags } });
     console.log(this.state);
     this.props.onData(this.state);
     this.props.open();
@@ -17,11 +17,14 @@ class ImageGallery extends Component {
     const { hits } = this.props;
     return (
       <ul className={css.ImageGallery}>
-        {hits.map(({ id, webformatURL, tags }) => (
+        {hits.map(({ id, webformatURL, tags, largeImageURL }) => (
           <li
             className={css.ImageGalleryItem}
             key={id}
-            onClick={this.handleClick}
+            onClick={() => this.handleClick(tags, largeImageURL)}
+            // onClick={e => {
+            //   console.log(largeImageURL);
+            // }}
           >
             <ImageGalleryItem webformatURL={webformatURL} tags={tags} />
           </li>
