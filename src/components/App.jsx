@@ -24,10 +24,10 @@ class App extends Component {
       this.setState({ isLoading: true, hits: null });
       getSearchImg(images, page, perPage)
         .then(data => {
-          if (data.hits) return this.setState({ hits: data.hits });
+          if (data.hits && hits === null)
+            return this.setState({ hits: data.hits });
           else if (data.hits && hits !== null)
             return this.setState({ hits: [...data.hits, ...prevState.hits] });
-          return Promise.reject(data.message);
         })
         .catch(error => {
           console.log(error);
@@ -77,7 +77,9 @@ class App extends Component {
             <Button handleClick={this.handleAdd} />
           </>
         )}
-        {hits?.length === 0 && <div>No results!</div>}
+        {hits?.length === 0 && (
+          <div style={{ fontSize: '24px', fontWeight: '600' }}>No results!</div>
+        )}
         {isShowModal && <Modal onClose={this.closeModal} modal={modal} />}
       </div>
     );

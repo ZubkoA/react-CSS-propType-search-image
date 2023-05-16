@@ -6,3 +6,16 @@ export const getSearchImg = (images, page, perPage) => {
     `${BASE_URL}?q=${images}&&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`
   ).then(res => res.json());
 };
+
+// export const getSearchImg = (images, page, perPage) => {
+// return fetch(
+// `${BASE_URL}?q=${images}&key=${API_KEY}&page=${page}&image_type=photo&orientation=horizontal&per_page=${perPage}`
+// ).then(res => {
+// if (res.ok) {
+// return Response.json();
+// }
+// return Promise.reject(
+// new Error(`Couldn't find anything with name ${images}`)
+// );
+// });
+// };
