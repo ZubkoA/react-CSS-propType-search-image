@@ -19,3 +19,5 @@ export const getSearchImg = (images, page, perPage) => {
 // );
 // });
 // };
+
+// .then(res => res.json());

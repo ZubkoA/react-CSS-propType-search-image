@@ -6,41 +6,36 @@ import Modal from './Modal/Modal';
 import css from './App.module.css';
 import Button from './Button/Button';
 import Loader from './Loader/Loader';
+import { ToastContainer } from 'react-toastify';
 
 class App extends Component {
   state = {
     searchImg: '',
     hits: null,
     isLoading: false,
+    isShowModal: false,
     page: 1,
     perPage: 12,
-    isShowModal: false,
+    modal: { url: '', tags: '' },
   };
 
   componentDidUpdate(prevProps, prevState) {
     const images = this.state.searchImg.trim();
-    const { page, hits, perPage } = this.state;
-    if ((prevState.searchImg !== images && images) || prevState.page !== page) {
+    const { page, perPage, hits } = this.state;
+    if (prevState.searchImg !== images || prevState.page !== page) {
       this.setState({ isLoading: true, hits: null });
       getSearchImg(images, page, perPage)
         .then(data => {
-          if (data.hits && hits === null)
-            return this.setState({ hits: data.hits });
-          else if (data.hits && hits !== null)
-            return this.setState({ hits: [...data.hits, ...prevState.hits] });
+          // this.setState(prevState => ({
+          //   hits: null ? data.hits : [...prevState.hits, ...data.hits],
+          // }));
+          if (hits === null) return this.setState({ hits: data.hits });
+          return this.setState({ hits: [...prevState.hits, ...data.hits] });
         })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          this.setState({ isLoading: false });
-        });
+        .catch(error => this.setState({ error }))
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
-
-  openModal = () => {
-    this.setState({ isShowModal: true });
-  };
   closeModal = () => {
     this.setState({ isShowModal: false });
   };
@@ -56,26 +51,21 @@ class App extends Component {
       };
     });
   };
-  savedModal = data => {
-    this.setState({ ...data });
+  savedModal = (tags, url) => {
+    this.setState({ modal: { tags, url }, isShowModal: true });
   };
 
   render() {
     const { hits, isLoading, isShowModal, modal } = this.state;
     return (
       <div className={css.App}>
+        <ToastContainer />
         <Searchbar handleSearch={this.handleSearch} />
         {isLoading && <Loader />}
 
+        {hits !== null && <ImageGallery hits={hits} onData={this.savedModal} />}
         {hits?.length > 0 && (
-          <>
-            <ImageGallery
-              hits={hits}
-              onData={this.savedModal}
-              open={this.openModal}
-            />
-            <Button handleClick={this.handleAdd} />
-          </>
+          <Button handleClick={this.handleAdd} title="Load more" />
         )}
         {hits?.length === 0 && (
           <div style={{ fontSize: '24px', fontWeight: '600' }}>No results!</div>

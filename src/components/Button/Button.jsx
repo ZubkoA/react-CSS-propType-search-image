@@ -1,13 +1,16 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import css from './Button.module.css';
 
-const Button = ({ handleClick }) => {
+const Button = ({ handleClick, title }) => {
   return (
     <button type="button" className={css.Button} onClick={handleClick}>
-      Load more
+      {title}
     </button>
   );
 };
-
+Button.propType = {
+  title: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
+};
 export default Button;
