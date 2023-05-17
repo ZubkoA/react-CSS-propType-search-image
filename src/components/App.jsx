@@ -20,11 +20,12 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const images = this.state.searchImg.trim();
-    const { page, perPage, hits } = this.state;
-    if (prevState.searchImg !== images || prevState.page !== page) {
+    const prevName = prevState.searchImg;
+    const prevPage = prevState.page;
+    const { page, perPage, hits, searchImg } = this.state;
+    if (prevName !== searchImg || prevPage !== page) {
       this.setState({ isLoading: true, hits: null });
-      getSearchImg(images, page, perPage)
+      getSearchImg(searchImg, page, perPage)
         .then(data => {
           // this.setState(prevState => ({
           //   hits: null ? data.hits : [...prevState.hits, ...data.hits],
