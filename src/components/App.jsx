@@ -26,7 +26,7 @@ class App extends Component {
     const { page, perPage, hits, searchImg } = this.state;
 
     if (prevName !== searchImg || prevPage !== page) {
-      this.setState({ isLoading: true, hits: null });
+      this.setState({ isLoading: true });
       getSearchImg(searchImg, page, perPage)
         .then(res => {
           if (res.ok) {
@@ -47,7 +47,7 @@ class App extends Component {
   };
 
   handleSearch = searchImg => {
-    this.setState({ searchImg });
+    this.setState({ searchImg, hits: null, page: 1 });
   };
 
   handleAdd = () => {
@@ -62,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { hits, isLoading, isShowModal, modal, error, searchImg } =
+    const { hits, isLoading, isShowModal, modal, error, searchImg, page } =
       this.state;
     return (
       <div className={css.App}>
