@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import css from './Searchbar.module.css';
-import { ReactComponent as AddIcon } from '../icons/search-outline.svg';
+import { ReactComponent as AddIcon } from '../../icons/search-outline.svg';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
