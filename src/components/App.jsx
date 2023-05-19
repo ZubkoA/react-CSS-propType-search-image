@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { getSearchImg } from './api/SearchFile';
+import { getSearchImg } from '../api/SearchFile';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
@@ -62,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { hits, isLoading, isShowModal, modal, error, searchImg} =
+    const { hits, isLoading, isShowModal, modal, error, searchImg } =
       this.state;
     return (
       <div className={css.App}>
