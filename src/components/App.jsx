@@ -62,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { hits, isLoading, isShowModal, modal, error, searchImg, page } =
+    const { hits, isLoading, isShowModal, modal, error, searchImg} =
       this.state;
     return (
       <div className={css.App}>
